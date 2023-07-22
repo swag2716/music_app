@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:song_app/models/bookmark_track.dart';
 import '../widgets/music_tile.dart';
 
-class BookmarkScreen extends StatefulWidget{
+class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({super.key});
 
   @override
@@ -73,14 +73,11 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
           track.albumName = trackAlbumList[index];
           track.artistName = trackAlbumList[index];
           return MusicTile(
-            trackId: track.trackId!,
-            trackName: track.trackName!,
-            albumName: track.albumName!,
-            artistName: track.artistName!
-
-          );
+              trackId: track.trackId!,
+              trackName: track.trackName!,
+              albumName: track.albumName!,
+              artistName: track.artistName!);
         },
         itemCount: trackIdList.length);
   }
 }
-

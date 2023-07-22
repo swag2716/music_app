@@ -1,29 +1,24 @@
 import 'package:bloc/bloc.dart';
 import 'package:song_app/bloc/music_details_bloc/bloc_event.dart';
 import 'package:song_app/bloc/music_details_bloc/bloc_state.dart';
-import 'package:song_app/controllers/get_lyrics.dart';
-
-
-import '../../controllers/get_music.dart';
+import '../../repository/music_repository.dart';
 
 class MusicDetailsBloc extends Bloc<MusicDetailsEvent, MusicDetailsState> {
-  final Music _music;
-  final MusicLyric _musicLyric;
+  final MusicRepository musicRespository;
+  final int trackId;
 
-  MusicDetailsBloc({required Music music, required MusicLyric musicLyric}) : 
-  _music = music, 
-  _musicLyric = musicLyric,
-  super(MusicDetailsLoadingState()) {
+  MusicDetailsBloc({required this.musicRespository, required this.trackId})
+      : super(MusicDetailsLoadingState()) {
     on<LoadMusicDetailsAndLyricsEvent>((event, emit) async {
       emit(MusicDetailsLoadingState());
-      try{
-        final music = await _music.getMusic(event.trackId);
-        final musicLyric = await _musicLyric.getLyrics(event.trackId);
+      try {
+        final music = await musicRespository.getMusic(event.trackId);
+        final musicLyric = await musicRespository.getLyrics(event.trackId);
         emit(MusicDetailsLoadedState(music, musicLyric));
-      } catch(e){
+      } catch (e) {
         emit(MusicDetailsErrorState(e.toString()));
       }
-      
     });
+    add(LoadMusicDetailsAndLyricsEvent(trackId));
   }
 }
