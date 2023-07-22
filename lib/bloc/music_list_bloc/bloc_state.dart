@@ -8,7 +8,7 @@ class MusicLoadingState extends MusicState{
   List<Object?> get props => [];
 }
 class MusicLoadedState extends MusicState{
-  final List<MusicList> musics;
+  final MusicList musics;
   MusicLoadedState(this.musics);
   @override
   List<Object?> get props => [musics];

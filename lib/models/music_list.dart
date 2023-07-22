@@ -1,11 +1,11 @@
 class MusicList {
-  final Message ?message;
+  final Message message;
 
-  MusicList({this.message});
+  MusicList({required this.message});
 
   factory MusicList.fromJson(Map<String, dynamic> json) {
     return MusicList(
-    message: json['message'] != null ? Message.fromJson(json['message']) : null
+    message: Message.fromJson(json['message'])
       );
 
 
@@ -14,28 +14,28 @@ class MusicList {
   Map<String, dynamic> toJson() {
 
     return{
-      'message': message!.toJson()
+      'message': message.toJson()
     };
   }
 }
 
 class Message {
-  final Header ?header;
-  final Body ?body;
+  final Header header;
+  final Body body;
 
-  Message({this.header, this.body});
+  Message({required this.header, required this.body});
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
-      header: json['header'] != null ? Header.fromJson(json['header']) : null,
-      body: json['body'] != null ? Body.fromJson(json['body']) : null
+      header: Header.fromJson(json['header']),
+      body: Body.fromJson(json['body'])
     );
   }
 
   Map<String, dynamic> toJson() {
     return{
-      'header':header!.toJson(),
-      'body': body!.toJson()
+      'header':header.toJson(),
+      'body': body.toJson()
     };
   }
 }
@@ -62,40 +62,40 @@ class Header {
 }
 
 class Body {
-  final List<TrackList> trackList;
+  final List<TrackList> ?trackList;
 
-  Body({required this.trackList});
+  Body({this.trackList});
 
   factory Body.fromJson(Map<String, dynamic> json) {
-    List<TrackList> trackList = [];
+    List<TrackList> trackList = (json['track_list'] as List)
+      .map((v) => TrackList.fromJson(v))
+      .toList();
     return Body(
-      trackList:json['track_list'].forEach((v) {
-        trackList.add(TrackList.fromJson(v));
-      })
+      trackList:trackList
     );
   }
 
   Map<String, dynamic> toJson() {
     return{
-      'track_list':trackList.map((v) => v.toJson()).toList()
+      'track_list':trackList!.map((v) => v.toJson()).toList()
     };
   }
 }
 
 class TrackList {
-  final Track ?track;
+  final Track track;
 
-  TrackList({this.track});
+  TrackList({required this.track});
 
   factory TrackList.fromJson(Map<String, dynamic> json) {
     return TrackList(
-      track:json['track'] != null ? Track.fromJson(json['track']) : null
+      track:Track.fromJson(json['track'])
     );
   }
 
   Map<String, dynamic> toJson() {
     return{
-      'track':track!.toJson()
+      'track':track.toJson()
     };
   }
 }
@@ -119,7 +119,7 @@ class Track {
   final String trackEditUrl;
   final int restricted;
   final String updatedTime;
-  final PrimaryGenres ?primaryGenres;
+  final PrimaryGenres primaryGenres;
 
   Track(
       {required this.trackId,
@@ -140,7 +140,7 @@ class Track {
       required this.trackEditUrl,
       required this.restricted,
       required this.updatedTime,
-      this.primaryGenres});
+      required this.primaryGenres});
 
   factory Track.fromJson(Map<String, dynamic> json) {
     return Track(
@@ -162,9 +162,7 @@ class Track {
     trackEditUrl :json['track_edit_url'],
     restricted :json['restricted'],
     updatedTime :json['updated_time'],
-    primaryGenres:json['primary_genres'] != null
-        ? PrimaryGenres.fromJson(json['primary_genres'])
-        : null
+    primaryGenres:PrimaryGenres.fromJson(json['primary_genres'])
     );
   }
 
@@ -188,7 +186,7 @@ class Track {
       'track_edit_url':trackEditUrl,
       'restricted':restricted,
       'updated_time':updatedTime,
-      'primary_genres':primaryGenres!.toJson()
+      'primary_genres':primaryGenres.toJson()
     };
   }
 }
@@ -196,7 +194,7 @@ class Track {
 class PrimaryGenres {
   final List<MusicGenreList> ?musicGenreList;
 
-  PrimaryGenres({this.musicGenreList});
+  PrimaryGenres({required this.musicGenreList});
 
   factory PrimaryGenres.fromJson(Map<String, dynamic> json) {
     List<MusicGenreList> musicGenreList = [];
@@ -215,21 +213,19 @@ class PrimaryGenres {
 }
 
 class MusicGenreList {
-  final MusicGenre ?musicGenre;
+  final MusicGenre musicGenre;
 
-  MusicGenreList({this.musicGenre});
+  MusicGenreList({required this.musicGenre});
 
   factory MusicGenreList.fromJson(Map<String, dynamic> json) {
     return MusicGenreList(
-      musicGenre:json['music_genre'] != null
-          ? MusicGenre.fromJson(json['music_genre'])
-          : null
+      musicGenre:MusicGenre.fromJson(json['music_genre'])
     );
   }
 
   Map<String, dynamic> toJson() {
     return{
-      'music_genre':musicGenre!.toJson()
+      'music_genre':musicGenre.toJson()
     };
   }
 }
